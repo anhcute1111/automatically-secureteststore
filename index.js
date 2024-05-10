@@ -1,7 +1,4 @@
-const groupBy = (arr, func) =>
-  arr
-    .map(typeof func === "function" ? func : (val) => val[func])
-    .reduce((acc, val, i) => {
-      acc[val] = (acc[val] || []).concat(arr[i]);
-      return acc;
-    }, {});
+const dropRightWhile = (arr, func) => {
+  while (arr.length > 0 && !func(arr[arr.length - 1])) arr = arr.slice(0, -1);
+  return arr;
+};
