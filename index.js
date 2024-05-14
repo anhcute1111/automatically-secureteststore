@@ -1,14 +1,22 @@
-function maxArea(height) {
-  let maxArea = 0;
-  let left = 0;
-  let right = height.length - 1;
-  while (left < right) {
-    maxArea = Math.max(
-      maxArea,
-      Math.min(height[left], height[right]) * (right - left),
-    );
-    if (height[left] < height[right]) left++;
-    else right--;
+function canFinish(numCourses, prerequisites) {
+  const graph = new Array(numCourses).fill(0).map(() => []);
+  const inDegree = new Array(numCourses).fill(0);
+  for (const [course, pre] of prerequisites) {
+    graph[pre].push(course);
+    inDegree[course]++;
   }
-  return maxArea;
+  const queue = [];
+  for (let i = 0; i < numCourses; i++) {
+    if (inDegree[i] === 0) queue.push(i);
+  }
+  let count = 0;
+  while (queue.length) {
+    const course = queue.shift();
+    count++;
+    for (const nextCourse of graph[course]) {
+      inDegree[nextCourse]--;
+      if (inDegree[nextCourse] === 0) queue.push(nextCourse);
+    }
+  }
+  return count === numCourses;
 }
